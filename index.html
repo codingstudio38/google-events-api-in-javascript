@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Events</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    <style>
+        table thead {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        table thead tr,
+        th {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        table tbody tr,
+        td {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        ol {
+            margin: 0px !important;
+        }
+        
+        ol li {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        .register {
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+            margin-top: 3%;
+            padding: 3%;
+        }
+        
+        .register-left {
+            text-align: center;
+            color: #fff;
+            margin-top: 4%;
+        }
+        
+        .register-left input {
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            width: 60%;
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #383d41;
+            margin-top: 30%;
+            margin-bottom: 3%;
+            cursor: pointer;
+        }
+        
+        .register-right {
+            background: #f8f9fa;
+            border-top-left-radius: 10% 50%;
+            border-bottom-left-radius: 10% 50%;
+        }
+        
+        .register-left img {
+            margin-top: 15%;
+            margin-bottom: 5%;
+            width: 50%;
+            -webkit-animation: mover 2s infinite alternate;
+            animation: mover 1s infinite alternate;
+        }
+        
+        @-webkit-keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .register-left p {
+            font-weight: lighter;
+            padding: 12%;
+            margin-top: -9%;
+        }
+        
+        .register .register-form {
+            padding: 10%;
+            margin-top: 10%;
+        }
+        
+        .btnRegister {
+            float: right;
+            margin-top: 10%;
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            background: #0062cc;
+            color: #fff;
+            font-weight: 600;
+            width: 50%;
+            cursor: pointer;
+        }
+        
+        .register .nav-tabs {
+            margin-top: 3%;
+            border: none;
+            background: #0062cc;
+            border-radius: 1.5rem;
+            width: 28%;
+            float: right;
+        }
+        
+        .register .nav-tabs .nav-link {
+            padding: 2%;
+            height: 34px;
+            font-weight: 600;
+            color: #fff;
+            border-top-right-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+        }
+        
+        .register .nav-tabs .nav-link:hover {
+            border: none;
+        }
+        
+        .register .nav-tabs .nav-link.active {
+            width: 100px;
+            color: #0062cc;
+            border: 2px solid #0062cc;
+            border-top-left-radius: 1.5rem;
+            border-bottom-left-radius: 1.5rem;
+        }
+        
+        .register-heading {
+            text-align: center;
+            margin-top: 8%;
+            margin-bottom: -15%;
+            color: #495057;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <div class="container">
+
+        <div class="col-md-12 mt-5" stylt="text-align: center;">
+            <h2>Google Calendar Events</h2>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success" id="authorize_button" onclick="handleAuthClick()">Connect</button>
+                <button type="button" class="btn btn-danger" id="signout_button" onclick="handleSignoutClick()">Disconnect</button>
+            </div>
+
+        </div><br>
+        <div class="container register" id="register_form">
+            <div class="row">
+                <div class="col-md-3 register-left">
+                    <img src="icon.png" alt="" />
+
+                </div>
+                <div class="col-md-9 register-right">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">Create Event</h3>
+                            <div class="row register-form">
+                                <div class="col-md-12">
+                                    <form action="#" method="POST" enctype="multipart/form-data" id="appty_form">
+                                        <div class="form-group">
+                                            <input type="date" id="date" name="date" class="form-control" placeholder="Date *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="time" id="starttime" name="starttime" class="form-control" placeholder="Start Time *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="time" id="endtime" name="endtime" class="form-control" placeholder="End Time *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Summary *" name="summary" id="summary" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Location *" name="location" id="location" />
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea name="description" id="description" placeholder="Description *" class="form-control"></textarea>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="button" class="btn btn-primary" name="addevent" value="Apply" id="add_Events" onclick="addEvents()" />
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div><br>
+        <table border="1" style="margin-top:10px; margin-bottom:10px;" width="100%" id="data_tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Summery</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Attendees</th>
+                    <th>Start Date/Time</th>
+                    <th>End Date/Time</th>
+                    <th>Link</th>
+                    <th>Google Meet Link</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="content" style="white-space: pre-wrap;">
+
+
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <script type="text/javascript">
+        const CLIENT_ID = '451052209587-cmdb19rrahgp3nq7p0nlc4v7fdrjdfba.apps.googleusercontent.com';
+        const API_KEY = 'AIzaSyD50z_LLr6wlM4QZJjxkjxjVIfzzbBp-M0';
+        const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+        //const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+        const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+        let tokenClient;
+        let gapiInited = false;
+        let gisInited = false;
+
+        var authorize_button = document.getElementById('authorize_button');
+        var signout_button = document.getElementById('signout_button');
+        var register_form = document.getElementById('register_form');
+        var data_tbl = document.getElementById('data_tbl');
+
+
+        authorize_button.style.visibility = 'hidden';
+        signout_button.style.visibility = 'hidden';
+        register_form.style.display = 'none';
+        data_tbl.style.display = 'none';
+
+        function gapiLoaded() {
+            gapi.load('client', initializeGapiClient);
+        }
+
+        async function initializeGapiClient() {
+            await gapi.client.init({
+                apiKey: API_KEY,
+                discoveryDocs: [DISCOVERY_DOC],
+            });
+            gapiInited = true;
+            maybeEnableButtons();
+        }
+
+        function gisLoaded() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: '',
+            });
+            gisInited = true;
+            maybeEnableButtons();
+        }
+
+        function maybeEnableButtons() {
+            if (gapiInited && gisInited) {
+                authorize_button.style.visibility = 'visible';
+            }
+        }
+
+        function handleAuthClick() {
+            tokenClient.callback = async(resp) => {
+                if (resp.error !== undefined) {
+                    throw (resp);
+                }
+                signout_button.style.visibility = 'visible';
+                register_form.style.display = 'block';
+                data_tbl.style.display = 'block';
+                authorize_button.innerText = 'Refresh';
+                await listUpcomingEvents();
+            };
+            let getToken = gapi.client.getToken();
+            if (getToken === null) {
+                tokenClient.requestAccessToken({
+                    prompt: 'consent'
+                });
+            } else {
+                tokenClient.requestAccessToken({
+                    prompt: ''
+                });
+            }
+        }
+
+        function handleSignoutClick() {
+            const token = gapi.client.getToken();
+            if (token !== null) {
+                google.accounts.oauth2.revoke(token.access_token);
+                gapi.client.setToken('');
+                document.getElementById('content').innerHTML = '';
+                authorize_button.innerText = 'Connect';
+                signout_button.style.visibility = 'hidden';
+                register_form.style.display = 'none';
+                data_tbl.style.display = 'none';
+            }
+        }
+
+        function setdata(data) {
+            if (!data || data.length == 0) {
+                return;
+            }
+            let d = "";
+            data.forEach((item, key) => {
+                d += `<li>${item.email}</li>`;
+            });
+            return d;
+
+        }
+
+        function ResetDate(data) {
+            if (!data || data.length == 0) {
+                return;
+            }
+            data.forEach((item, key) => {
+                $.ajax({
+                    url: 'https://www.polosoftech.com/staging/google-events/ajax/',
+                    type: "POST",
+                    data: {
+                        'modify_data': "addevent",
+                        '_start': item.start.dateTime,
+                        '_end': item.end.dateTime,
+                    },
+                    beforeSend: function() {
+
+                    },
+                    success: function(data, textStatus, jQxhr) {
+                        let res = JSON.parse(data);
+                        $(`#s_${item.id}`).html(res.start);
+                        $(`#e_${item.id}`).html(res.end);
+                    }
+                })
+            })
+
+        }
+
+
+        async function deleteEvent(id) {
+            if (confirm("Are you sure ?")) {
+                let _delete = await gapi.client.calendar.events.delete({
+                    calendarId: 'primary',
+                    eventId: id,
+                });
+                $(`#${id}`).remove();
+            }
+        }
+
+
+        async function listUpcomingEvents() {
+            let response;
+            try {
+                const request = {
+                    'calendarId': 'primary',
+                    'timeMin': (new Date()).toISOString(),
+                    'showDeleted': false,
+                    'singleEvents': true,
+                    'maxResults': 10,
+                    'orderBy': 'startTime',
+                };
+                response = await gapi.client.calendar.events.list(request);
+            } catch (err) {
+                document.getElementById('content').innerText = err.message;
+                return;
+            }
+            const events = response.result.items;
+            let i = 1;
+            $(`#content`).html("");
+            events.forEach((item, key) => {
+                $(`#content`).append(
+                    `<tr id="${item.id}">
+                <td>${i}</td>
+                <td>${item.summary}</td>
+                <td>${item.location}</td>
+                <td>${item.description}</td>
+                <td>
+                <ol>
+                ${setdata(item.attendees)}
+                </ol>
+                </td>
+                <td id="s_${item.id}">${item.start.dateTime}</td>
+                <td id="e_${item.id}">${item.end.dateTime}</td>
+                <td><a target="_blank" href="${item.htmlLink}">Link</a></td>
+                <td><a target="_blank" href="${item.hangoutLink}">Google Meet</a></td>
+                <td><button type="button" class="btn btn-danger" onclick="deleteEvent('${item.id}')">Delete</button></td>
+            </tr>`
+                )
+                i++;
+            });
+            ResetDate(events);
+        }
+
+
+        async function addEvents() {
+            var eventData;
+            let date = $("#date").val();
+            let starttime = $("#starttime").val();
+            let endtime = $("#endtime").val();
+            let summary = $("#summary").val();
+            let location = $("#location").val();
+            let description = $("#description").val();
+            if (date == "") {
+                alert("Please select data.");
+                return;
+            }
+            if (starttime == "") {
+                alert("Please select start time.");
+                return;
+            }
+            if (endtime == "") {
+                alert("Please select end time.");
+                return;
+            }
+            if (summary == "") {
+                alert("Please enter summary.");
+                return;
+            }
+            if (location == "") {
+                alert("Please enter location.");
+                return;
+            }
+            if (description == "") {
+                alert("Please enter description.");
+                return;
+            }
+            await $.ajax({
+                url: 'https://www.polosoftech.com/staging/google-events/ajax/',
+                type: "POST",
+                data: {
+                    'addevent': "addevent",
+                    'date': date,
+                    'starttime': starttime,
+                    'endtime': endtime,
+                    'timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                },
+                beforeSend: function() {
+                    $("#add_Events").attr("disabled", "disabled");
+                    $("#appty_form").css("opacity", "0.5");
+                },
+                success: function(data, textStatus, jQxhr) {
+
+                    let res = JSON.parse(data);
+                    eventData = {
+                        'summary': summary,
+                        'location': location,
+                        'description': description,
+                        'start': {
+                            'dateTime': res.start,
+                            'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                        },
+                        'end': {
+                            'dateTime': res.end,
+                            'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+                        },
+                        'recurrence': [
+                            'RRULE:FREQ=DAILY;COUNT=1'
+                        ],
+                        'attendees': [{
+                            'email': 'mondalbidyut38@gmail.com'
+                        }, {
+                            'email': 'vidyut.start006@gmail.com'
+                        }],
+                        'reminders': {
+                            'useDefault': false,
+                            'overrides': [{
+                                'method': 'email',
+                                'minutes': 24 * 60
+                            }, {
+                                'method': 'popup',
+                                'minutes': 10
+                            }]
+                        },
+                        "conferenceData": {
+                            "createRequest": {
+                                "requestId": "sample123",
+                                "conferenceSolutionKey": {
+                                    "type": "hangoutsMeet"
+                                },
+                            }
+                        },
+                        "colorId": 10
+                    };
+                    // gapi.client.load('calendar', 'v3', function() {});
+                    let _insert = gapi.client.calendar.events.insert({
+                        'calendarId': 'primary',
+                        'resource': eventData,
+                        "conferenceDataVersion": 1,
+                    });
+                    _insert.execute(function(de) {
+                        $("#add_Events").removeAttr("disabled");
+                        $("#appty_form").css("opacity", "1");
+                        $("#appty_form")[0].reset();
+                        listUpcomingEvents();
+                    });
+
+                }
+            })
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Events</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="handleClientLoad()"></script>
+
+
+    <style>
+        table thead {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        table thead tr,
+        th {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        table tbody tr,
+        td {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        ol {
+            margin: 0px !important;
+        }
+        
+        ol li {
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        
+        .register {
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+            margin-top: 3%;
+            padding: 3%;
+        }
+        
+        .register-left {
+            text-align: center;
+            color: #fff;
+            margin-top: 4%;
+        }
+        
+        .register-left input {
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            width: 60%;
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #383d41;
+            margin-top: 30%;
+            margin-bottom: 3%;
+            cursor: pointer;
+        }
+        
+        .register-right {
+            background: #f8f9fa;
+            border-top-left-radius: 10% 50%;
+            border-bottom-left-radius: 10% 50%;
+        }
+        
+        .register-left img {
+            margin-top: 15%;
+            margin-bottom: 5%;
+            width: 50%;
+            -webkit-animation: mover 2s infinite alternate;
+            animation: mover 1s infinite alternate;
+        }
+        
+        @-webkit-keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @keyframes mover {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .register-left p {
+            font-weight: lighter;
+            padding: 12%;
+            margin-top: -9%;
+        }
+        
+        .register .register-form {
+            padding: 10%;
+            margin-top: 10%;
+        }
+        
+        .btnRegister {
+            float: right;
+            margin-top: 10%;
+            border: none;
+            border-radius: 1.5rem;
+            padding: 2%;
+            background: #0062cc;
+            color: #fff;
+            font-weight: 600;
+            width: 50%;
+            cursor: pointer;
+        }
+        
+        .register .nav-tabs {
+            margin-top: 3%;
+            border: none;
+            background: #0062cc;
+            border-radius: 1.5rem;
+            width: 28%;
+            float: right;
+        }
+        
+        .register .nav-tabs .nav-link {
+            padding: 2%;
+            height: 34px;
+            font-weight: 600;
+            color: #fff;
+            border-top-right-radius: 1.5rem;
+            border-bottom-right-radius: 1.5rem;
+        }
+        
+        .register .nav-tabs .nav-link:hover {
+            border: none;
+        }
+        
+        .register .nav-tabs .nav-link.active {
+            width: 100px;
+            color: #0062cc;
+            border: 2px solid #0062cc;
+            border-top-left-radius: 1.5rem;
+            border-bottom-left-radius: 1.5rem;
+        }
+        
+        .register-heading {
+            text-align: center;
+            margin-top: 8%;
+            margin-bottom: -15%;
+            color: #495057;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <div class="container">
+
+        <div class="col-md-12 mt-5" stylt="text-align: center;">
+            <h2>Google Calendar Events</h2>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success" id="authorize_button">Connect</button>
+                <button type="button" class="btn btn-danger" id="signout_button">Disconnect</button>
+            </div>
+
+        </div><br>
+        <div class="container register" id="register_form">
+            <div class="row">
+                <div class="col-md-3 register-left">
+                    <img src="icon.png" alt="" />
+
+                </div>
+                <div class="col-md-9 register-right">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 class="register-heading">Create Event</h3>
+                            <div class="row register-form">
+                                <div class="col-md-12">
+                                    <form action="#" method="POST" enctype="multipart/form-data" id="appty_form">
+                                        <div class="form-group">
+                                            <input type="date" id="date" name="date" class="form-control" placeholder="Date *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="time" id="starttime" name="starttime" class="form-control" placeholder="Start Time *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="time" id="endtime" name="endtime" class="form-control" placeholder="End Time *" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Summary *" name="summary" id="summary" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Location *" name="location" id="location" />
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea name="description" id="description" placeholder="Description *" class="form-control"></textarea>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="button" class="btn btn-primary" name="addevent" value="Apply" id="add_Events" onclick="addEvents()" />
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div><br>
+        <table border="1" style="margin-top:10px; margin-bottom:10px;" width="100%" id="data_tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Summery</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Attendees</th>
+                    <th>Start Date/Time</th>
+                    <th>End Date/Time</th>
+                    <th>Link</th>
+                    <th>Google Meet Link</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="content" style="white-space: pre-wrap;">
+
+
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <script type="text/javascript">
+        var CLIENT_ID = "668672999013-l9ja2700t0u6vfuefs7g0uao19k2gq3b.apps.googleusercontent.com";
+        var API_KEY = "AIzaSyB52_nNqcQ256NpROspCXi9E_5yydiUE-A";
+        var DISCOVERY_DOCS = "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
+        var SCOPES = "https://www.googleapis.com/auth/calendar";
+
+        var authorizeButton = document.getElementById("authorize_button");
+        var signoutButton = document.getElementById("signout_button");
+
+        function handleClientLoad() {
+            gapi.load("client", initClient);
+        }
+        async function initClient() {
+            console.log("load client.");
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: [DISCOVERY_DOCS],
+                scope: SCOPES,
+            });
+            gapi.client.load('calendar', 'v3', () => {
+                console.log("load calendar.");
+            });
+        }
+        async function login() {
+            const googleAuth = gapi.auth2.getAuthInstance();
+            const googleUser = await googleAuth.signIn();
+            const token = googleUser.getAuthResponse().id_token;
+            console.log(googleUser);
+
+            const credential = auth.GoogleAuthProvider.credential(token);
+            console.log(credential);
+        }
+
+        /**
+         *  Called when the signed in status changes, to update the UI
+         *  appropriately. After a sign-in, the API is called.
+         */
+        function updateSigninStatus(isSignedIn) {
+            console.log("updateSigninStatus()");
+            if (isSignedIn) {
+                authorizeButton.style.display = "none";
+                signoutButton.style.display = "block";
+                listUpcomingEvents();
+            } else {
+                authorizeButton.style.display = "block";
+                signoutButton.style.display = "none";
+            }
+        }
+
+        async function handleAuthClick(event) {
+            await gapi.auth2.getAuthInstance().signIn();
+
+        }
+
+        function handleSignoutClick(event) {
+            gapi.auth2.getAuthInstance().signOut();
+        }
+
+        /**
+         * Append a pre element to the body containing the given message
+         * as its text node. Used to display the results of the API call.
+         *
+         * @param {string} message Text to be placed in pre element.
+         */
+        function appendPre(message) {
+            var pre = document.getElementById("content");
+            var textContent = document.createTextNode(message + "\n");
+            pre.appendChild(textContent);
+        }
+
+        /**
+         * Print the summary and start datetime/date of the next ten events in
+         * the authorized user's calendar. If no events are found an
+         * appropriate message is printed.
+         */
+        function listUpcomingEvents() {
+            gapi.client.calendar.events
+                .list({
+                    calendarId: "primary",
+                    timeMin: new Date().toISOString(),
+                    showDeleted: false,
+                    singleEvents: true,
+                    maxResults: 10,
+                    orderBy: "startTime",
+                })
+                .then(function(response) {
+                    var events = response.result.items;
+                    appendPre("Upcoming events:");
+
+                    if (events.length > 0) {
+                        for (i = 0; i < events.length; i++) {
+                            var event = events[i];
+                            var when = event.start.dateTime;
+                            if (!when) {
+                                when = event.start.date;
+                            }
+                            appendPre(event.summary + " (" + when + ")");
+                        }
+                    } else {
+                        appendPre("No upcoming events found.");
+                    }
+                });
+        }
+    </script>
+
+
+
+</body>
+
+</html>
